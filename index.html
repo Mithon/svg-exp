@@ -171,6 +171,8 @@
         growHover(rt);
         growHover(bt);
 
+        gt.filter(Snap.filter.shadow(10, 10, 4, 'black'))
+
     }
 
     </script>
@@ -180,20 +182,11 @@
 
     <svg id="tea" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     	 viewBox="53.3 251.1 506.6 270.4" enable-background="new 53.3 251.1 506.6 270.4" xml:space="preserve">
-    <filter id="dropshadow" height="120%" width="120%" style="fill:#000080;">
-        <feGaussianBlur in="SourceAlpha" stdDeviation="1"/> <!-- stdDeviation is how much to blur -->
-        <fill-opacity opacity-value="0.2"/>
-        <feOffset dx="1" dy="1" result="offsetblur"/> <!-- how much to offset -->
-        <feMerge>
-            <feMergeNode/> <!-- this contains the offset blurred image -->
-            <feMergeNode in="SourceGraphic"/> <!-- this contains the element that the filter is applied to -->
-        </feMerge>
-    </filter>
     <path id="mugTea" fill="rgba(170, 76, 0, 0.68)" enable-background="new    " d="M126.5,394.6c4.3,7.8,45.5,8,62.4,2
     	c17.6-27.8,22.9-95.4,23.7-113.3c-23.1-4.4-84.9,8.6-107.5-0.8C102.4,296.9,108.2,363.5,126.5,394.6z"/>
     <g id="greenTea">
     	<g>
-    		<path class="teaBag" style="filter:url(#dropshadow)" fill="#ADD79D" d="M427.4,376.8c0,0.8-0.7,1.4-1.4,1.4h-89.4c-0.8,0-1.4-0.6-1.4-1.4V274.5c0-0.8,0.6-1.4,1.4-1.4h89.3
+    		<path class="teaBag" fill="#ADD79D" d="M427.4,376.8c0,0.8-0.7,1.4-1.4,1.4h-89.4c-0.8,0-1.4-0.6-1.4-1.4V274.5c0-0.8,0.6-1.4,1.4-1.4h89.3
     			c0.8,0,1.4,0.6,1.4,1.4L427.4,376.8L427.4,376.8z"/>
     	</g>
     	<g pointer-events="none">
@@ -207,7 +200,7 @@
     </g>
     <g id="herbalTea">
     	<g>
-    		<path style="filter:url(#dropshadow)" class="teaBag" fill="#EDE7DD" d="M427.4,497.3c0,0.8-0.6,1.4-1.4,1.4h-89.3c-0.8,0-1.4-0.6-1.4-1.4V395c0-0.8,0.6-1.4,1.4-1.4H426
+    		<path class="teaBag" fill="#EDE7DD" d="M427.4,497.3c0,0.8-0.6,1.4-1.4,1.4h-89.3c-0.8,0-1.4-0.6-1.4-1.4V395c0-0.8,0.6-1.4,1.4-1.4H426
     			c0.8,0,1.4,0.7,1.4,1.4V497.3L427.4,497.3z"/>
     	</g>
     	<g pointer-events="none">
@@ -221,7 +214,7 @@
     </g>
     <g id="redTea">
     	<g>
-    		<path class="teaBag" style="filter:url(#dropshadow)" fill="#C9242A" d="M539.6,377.5c0,0.8-0.7,1.4-1.4,1.4h-89.3c-0.8,0-1.4-0.7-1.4-1.4V275.2c0-0.8,0.7-1.4,1.4-1.4h89.3
+    		<path class="teaBag" fill="#C9242A" d="M539.6,377.5c0,0.8-0.7,1.4-1.4,1.4h-89.3c-0.8,0-1.4-0.7-1.4-1.4V275.2c0-0.8,0.7-1.4,1.4-1.4h89.3
     			c0.8,0,1.4,0.7,1.4,1.4V377.5z"/>
     	</g>
     	<g pointer-events="none">
@@ -235,7 +228,7 @@
     </g>
     <g id="blackTea">
     	<g>
-    		<path class="teaBag" style="filter:url(#dropshadow)" fill="#246DB6" d="M539.6,497.3c0,0.8-0.7,1.4-1.4,1.4h-89.3c-0.8,0-1.4-0.7-1.4-1.4V394.9c0-0.8,0.7-1.4,1.4-1.4h89.3
+    		<path class="teaBag" fill="#246DB6" d="M539.6,497.3c0,0.8-0.7,1.4-1.4,1.4h-89.3c-0.8,0-1.4-0.7-1.4-1.4V394.9c0-0.8,0.7-1.4,1.4-1.4h89.3
     			c0.8,0,1.4,0.6,1.4,1.4V497.3z"/>
     	</g>
     	<g pointer-events="none">
