@@ -23,6 +23,17 @@
             box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.50);
         }
 
+        .teaText {
+            font-family:'Lora';
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .teaType {
+            font-family: 'Open Sans Condensed';
+        }
+
+
 
     </style>
 
@@ -44,33 +55,89 @@
         min = document.getElementById("minutes"),
         sec = document.getElementById("seconds");
 
+        var initiated = false;
+
+        function doubleDigit (num) {
+            return num > 9 ? num.toString() : "0" + num.toString();
+        }
+
         var time = new Date();
         hour = time.getHours();
         min.innerHTML = hour > 12 ? ( hour-12 > 9 ? hour-12 : "0" + (hour-12).toString() ): (hour > 9 ? hour : "0" + (hour).toString());
         sec.innerHTML = time.getMinutes() < 10 ? "0" + (time.getMinutes()).toString() : time.getMinutes();
 
+        console.log(doubleDigit(6));
+
 
         function growHover (obj) {
-
             obj.hover(function(){
                 obj.animate({ transform: 't0,0 s1.1' }, 100, mina.easeinout );
-                console.log('hover');
             }, function(){
                 obj.animate({ transform: 't0,0 s1' }, 200, mina.easeinout );
-                console.log('unhover');
             });
-
         }
 
-        oMug.hover(function(){
-            oMug.animate({ 'fill-opacity': '0.05' }, 200, mina.easeinout );
-            console.log('hover');
-        }, function(){
-            oMug.animate({ 'fill-opacity': '1' }, 300, mina.easeinout );
-            console.log('unhover');
+        var initiate = function() {
+            if (initiated == false) {
+                var startTimer = setInterval(function () {clock.countdown()}, 1000);
+                initiated = true;
+            }
+        };
+
+        var clock = {
+            minute : 0,
+            second : 0,
+            setTime : function(m, s) {
+                min.innerHTML = doubleDigit(m);
+                sec.innerHTML = doubleDigit(s);
+                this.minute = m;
+                this.second = s;
+                oMug.animate({ 'fill-opacity': '0.05' }, 400, mina.easeinout );
+                initiate();
+            },
+            countdown : function() {
+                if (this.second != 0) {
+                    this.second--;
+                }
+                else if (this.minute != 0)  {
+                    this.minute--;
+                    this.second = this.second + 59;
+                }
+                else {
+                    oMug.animate({ 'fill-opacity': '1' }, 300, mina.easeinout );
+                    return;
+                }
+                console.log(this.minute.toString() + ":" + this.second.toString());
+                this.setTime(this.minute, this.second);
+            }
+        };
+
+        gt.click(function() {
+            clock.setTime(3, 0);
+        });
+
+        ht.click(function() {
+            clock.setTime(2, 0)
+        });
+
+        rt.click(function() {
+            clock.setTime(5, 0);
+        });
+
+        bt.click(function() {
+            clock.setTime(4, 30);
         });
 
 
+        //Hover Effects
+
+        oMug.hover(function(){
+            if (clock.second == 0 & clock.minute == 0)
+            oMug.animate({ 'fill-opacity': '0.05' }, 200, mina.easeinout );
+        }, function(){
+            if (clock.second == 0 & clock.minute == 0)
+            oMug.animate({ 'fill-opacity': '1' }, 300, mina.easeinout );
+        });
 
         growHover(gt);
         growHover(ht);
@@ -93,11 +160,11 @@
     	</g>
     	<g pointer-events="none">
     		<rect x="730.5" y="259.6" fill="none" width="134" height="51.5"/>
-    		<text transform="matrix(1 0 0 1 770.0786 285.3174)" fill="#288753" font-family="'Lora'" font-weight="bold" font-style="italic" font-size="33.9976">tea</text>
+    		<text class="teaText" transform="matrix(1 0 0 1 770.0786 285.3174)" fill="#288753" font-size="33.9976">tea</text>
     	</g>
     	<g pointer-events="none">
     		<rect x="730.5" y="214.4" fill="none" width="134" height="51.4"/>
-    		<text transform="matrix(1 0 0 1 732.4272 251.6392)" fill="#FFFFFF" font-family="'Open Sans Condensed'" font-size="48.9566">GREEN</text>
+    		<text class="teaType" transform="matrix(1 0 0 1 732.4272 251.6392)" fill="#FFFFFF" font-size="48.9566">GREEN</text>
     	</g>
     </g>
     <g id="herbalTea">
