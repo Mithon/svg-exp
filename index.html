@@ -56,12 +56,14 @@
         bt = Snap.select("#blackTea"),
         oMug = Snap.select("#outerMug"),
         teaTag = Snap.select("#teaTag"),
+        gtBag = Snap.select("#gtBag"),
         mugTea = Snap.select("#mugTea");
 
         min = document.getElementById("minutes"),
         sec = document.getElementById("seconds");
 
         var initiated = false;
+        var timerActive = false;
 
         function doubleDigit (num) {
             return num > 9 ? num.toString() : "0" + num.toString();
@@ -87,7 +89,7 @@
             if (initiated == false) {
                 var startTimer = setInterval(function () {clock.countdown()}, 1000);
                 initiated = true;
-            }
+            };
         };
 
         var clock = {
@@ -99,9 +101,8 @@
                 sec.innerHTML = doubleDigit(s);
                 this.minute = m;
                 this.second = s;
-                //oMug.animate({ 'fill-opacity': '1' }, 300, mina.easeinout);
-                oMug.animate({ 'fill-opacity': '0.05' }, 400, mina.easeinout );
                 initiate();
+                timerActive = true;
             },
             countdown : function() {
                 if (this.second != 0) {
@@ -114,56 +115,49 @@
                 }
                 else {
                     oMug.animate({ 'fill-opacity': '1' }, 300, mina.easeinout );
+                    timerActive = false;
                     return;
                 }
-                console.log(this.minute.toString() + ":" + this.second.toString());
+                //console.log(this.minute.toString() + ":" + this.second.toString());
                 this.setTime(this.minute, this.second);
-                console.log("Laura sucks");
             }
         };
 
         function changeColour (o) {
             var timeleft = clock.second + (clock.minute * 60);
             var leftover = 1-(timeleft/clock.fullTime);
-            mugTea.animate({ 'fill-opacity': leftover.toString() }, 100, mina.easeinout );
-            console.log(leftover.toString() + " and " + clock.fullTime);
+            mugTea.animate({ 'fill-opacity': leftover.toString() }, 1000, mina.easeinout );
+            //console.log(leftover.toString() + " and " + clock.fullTime);
         }
 
         mugTea.animate({ 'fill-opacity': '0.00' }, 10, mina.easeinout );
 
-        gt.click(function() {
-            clock.setTime(3, 0);
-            clock.fullTime = (3* 60) + 0;
-            teaTag.animate({ 'fill': '#ADD79D' }, 1000, mina.easeinout );
-        });
+        function teaClick (m, s, colour) {
+            oMug.animate({ 'fill-opacity': '1' }, 300, mina.easeinout);
+            clock.setTime(m, s);
+            setTimeout(function () {
+                oMug.animate({ 'fill-opacity': '0.05' }, 400, mina.easeinout);
+            }, 2000);
+            clock.fullTime = (m* 60) + s;
+            teaTag.animate({ 'fill': colour }, 1000, mina.easeinout );
+        }
 
-        ht.click(function() {
-            clock.setTime(1, 0)
-            clock.fullTime = (1* 60) + 0;
-            teaTag.animate({ 'fill': '#EDE7DD' }, 1000, mina.easeinout );
-        });
+        gt.click(function(){teaClick(3, 0, '#ADD79D')});
 
-        rt.click(function() {
-            clock.setTime(5, 0);
-            clock.fullTime = (5* 60) + 0;
-            teaTag.animate({ 'fill': '#C9242A' }, 1000, mina.easeinout );
-        });
+        ht.click(function() {teaClick(1, 0, '#EDE7DD')});
 
-        bt.click(function() {
-            clock.setTime(4, 30);
-            clock.fullTime = (4* 30) + 0;
-            teaTag.animate({ 'fill': '#246DB6' }, 1000, mina.easeinout );
-        });
+        rt.click(function() {teaClick(5, 0, '#C9242A')});
 
+        bt.click(function() {teaClick(4, 30, '#246DB6')});
 
 
         //Hover Effects
 
         oMug.hover(function(){
-            if (clock.second == 0 & clock.minute == 0)
+            if (timerActive = false)
             oMug.animate({ 'fill-opacity': '0.05' }, 200, mina.easeinout );
         }, function(){
-            if (clock.second == 0 & clock.minute == 0)
+            if (timerActive = false)
             oMug.animate({ 'fill-opacity': '1' }, 300, mina.easeinout );
         });
 
@@ -172,8 +166,8 @@
         growHover(rt);
         growHover(bt);
 
-        gt.filter(Snap.filter.shadow(10, 10, 4, 'black'))
-
+        var f = Snap.filter.shadow(10, 10, 4, 'black');
+        gt.attr({filter: f});
     }
 
     </script>
@@ -183,11 +177,18 @@
 
     <svg id="tea" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     	 viewBox="53.3 251.1 506.6 270.4" enable-background="new 53.3 251.1 506.6 270.4" xml:space="preserve">
+    <filter id="dropShadow" x="0" y="0" width="140%" height="120%">
+        <feOffset result="offOut" in="SourceGraphic" dx="0" dy="1" />
+        <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+            values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.25 0" />
+        <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="1.5" />
+        <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+    </filter>
     <path id="mugTea" fill="rgba(170, 76, 0, 0.68)" enable-background="new    " d="M126.5,394.6c4.3,7.8,45.5,8,62.4,2
     	c17.6-27.8,22.9-95.4,23.7-113.3c-23.1-4.4-84.9,8.6-107.5-0.8C102.4,296.9,108.2,363.5,126.5,394.6z"/>
     <g id="greenTea">
     	<g>
-    		<path class="teaBag" fill="#ADD79D" d="M427.4,376.8c0,0.8-0.7,1.4-1.4,1.4h-89.4c-0.8,0-1.4-0.6-1.4-1.4V274.5c0-0.8,0.6-1.4,1.4-1.4h89.3
+    		<path class="teaBag" style="filter:url(#dropShadow)" id="gtBag" fill="#ADD79D" d="M427.4,376.8c0,0.8-0.7,1.4-1.4,1.4h-89.4c-0.8,0-1.4-0.6-1.4-1.4V274.5c0-0.8,0.6-1.4,1.4-1.4h89.3
     			c0.8,0,1.4,0.6,1.4,1.4L427.4,376.8L427.4,376.8z"/>
     	</g>
     	<g pointer-events="none">
@@ -201,7 +202,7 @@
     </g>
     <g id="herbalTea">
     	<g>
-    		<path class="teaBag" fill="#EDE7DD" d="M427.4,497.3c0,0.8-0.6,1.4-1.4,1.4h-89.3c-0.8,0-1.4-0.6-1.4-1.4V395c0-0.8,0.6-1.4,1.4-1.4H426
+    		<path class="teaBag" style="filter:url(#dropShadow)" fill="#EDE7DD" d="M427.4,497.3c0,0.8-0.6,1.4-1.4,1.4h-89.3c-0.8,0-1.4-0.6-1.4-1.4V395c0-0.8,0.6-1.4,1.4-1.4H426
     			c0.8,0,1.4,0.7,1.4,1.4V497.3L427.4,497.3z"/>
     	</g>
     	<g pointer-events="none">
@@ -215,7 +216,7 @@
     </g>
     <g id="redTea">
     	<g>
-    		<path class="teaBag" fill="#C9242A" d="M539.6,377.5c0,0.8-0.7,1.4-1.4,1.4h-89.3c-0.8,0-1.4-0.7-1.4-1.4V275.2c0-0.8,0.7-1.4,1.4-1.4h89.3
+    		<path class="teaBag" style="filter:url(#dropShadow)" fill="#C9242A" d="M539.6,377.5c0,0.8-0.7,1.4-1.4,1.4h-89.3c-0.8,0-1.4-0.7-1.4-1.4V275.2c0-0.8,0.7-1.4,1.4-1.4h89.3
     			c0.8,0,1.4,0.7,1.4,1.4V377.5z"/>
     	</g>
     	<g pointer-events="none">
@@ -229,7 +230,7 @@
     </g>
     <g id="blackTea">
     	<g>
-    		<path class="teaBag" fill="#246DB6" d="M539.6,497.3c0,0.8-0.7,1.4-1.4,1.4h-89.3c-0.8,0-1.4-0.7-1.4-1.4V394.9c0-0.8,0.7-1.4,1.4-1.4h89.3
+    		<path class="teaBag" style="filter:url(#dropShadow)" fill="#246DB6" d="M539.6,497.3c0,0.8-0.7,1.4-1.4,1.4h-89.3c-0.8,0-1.4-0.7-1.4-1.4V394.9c0-0.8,0.7-1.4,1.4-1.4h89.3
     			c0.8,0,1.4,0.6,1.4,1.4V497.3z"/>
     	</g>
     	<g pointer-events="none">
