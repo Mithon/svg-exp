@@ -136,8 +136,9 @@
             oMug.animate({ 'fill-opacity': '1' }, 300, mina.easeinout);
             clock.setTime(m, s);
             setTimeout(function () {
+                mugTea.animate({ 'fill-opacity': '0.00' }, 10, mina.easeinout );
                 oMug.animate({ 'fill-opacity': '0.05' }, 400, mina.easeinout);
-            }, 2000);
+            }, 1000);
             clock.fullTime = (m* 60) + s;
             teaTag.animate({ 'fill': colour }, 1000, mina.easeinout );
         }
