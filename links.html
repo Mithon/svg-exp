@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Svg Exploration</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f2f3f3;
+            overflow: hidden;
+        }
+
+        svg {
+            overflow: hidden;
+        }
+
+        svg:last-child {
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-right: 1px solid #dcdcdc;
+        }
+
+    </style>
+
+    <script src="resources/snap.svg-min.js"></script>
+
+    <script>
+        window.onload = function() {
+
+            //Getting Viewport size
+            var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+            var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+            //declaring drawing areas
+            var s = Snap(w, h);
+            //var s2 = Snap(75,h);
+
+            //defining variables
+            var mouseCircles = [],
+            pastCoords = [[mouseX, mouseY]],
+            connectors = [],
+            lines = 0,
+            mouseX = 0,
+            mouseY = 0,
+            circles = 0;
+
+
+            //mouse tracking
+            function moveFunc(ev, x, y) {
+                mouseX = x;
+                mouseY = y;
+
+            };
+
+
+
+            s.mousedown(function(){
+
+                //storing in array and adding to pag
+                mouseCircles.push(s.circle(mouseX, mouseY, 0));
+                pastCoords.push([mouseX, mouseY]);
+                connectors.push(s.path("M " + pastCoords[lines][0] + " " + pastCoords[lines][1] + " L " + pastCoords[lines+1][0] + " " + pastCoords[lines+1][1] +" z"));
+
+                console.log("M 100 100 L " + pastCoords[lines][0] + " " + pastCoords[lines][1] +" z");
+                console.log(pastCoords);
+
+                lines++;
+                circles++;
+
+                //adding attributes
+                mouseCircles[circles-1].attr({
+                    fill: "#2196F3",
+                    stroke: "#fff",
+                    strokeWidth: 0
+                });
+
+                connectors[lines-1].attr({
+                    stroke: "#2196F3",
+                    strokeWidth: 0
+                });
+
+                connectors[lines-1].animate({strokeWidth: 3}, 900, mina.elastic);
+
+                //animating in
+                mouseCircles[circles-1].animate({r: 10}, 700, mina.elastic);
+
+                //adding class for targeting
+                mouseCircles[circles-1].addClass("circle");
+            });
+
+
+            //update pointer location
+            s.mousemove(moveFunc);
+
+        }
+    </script>
+
+</head>
+
+<body>
+
+
+
+</body>
+
+</html>
