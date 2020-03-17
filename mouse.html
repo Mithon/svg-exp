@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Svg Exploration</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f2f3f3;
+            overflow: hidden;
+        }
+
+        svg {
+            overflow: hidden;
+        }
+
+        svg:last-child {
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-right: 1px solid #dcdcdc;
+        }
+
+    </style>
+
+    <script src="resources/snap.svg-min.js"></script>
+
+    <script>
+        window.onload = function() {
+
+            //Getting Viewport size
+            var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+            var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+
+            //declaring drawing areas
+            var s = Snap(w, h);
+            var s2 = Snap(75,h);
+
+            //defining variables
+            var circles = 0,
+            squares = 0,
+            mouseCircles = [],
+            mouseSquares = [],
+            mouseX = 0,
+            mouseY = 0,
+            time = 300,
+            time2 = 20,
+            cTime = 0,
+            color = "",
+            initiated = false,
+            shape = "circle";
+
+
+            //toolbar buttons
+
+            //x is two rectangles
+            var cButton = s2.rect(25, 20, 38, 10).attr({
+                fill: "red"
+            });
+            var cButton2 = s2.rect(25, 20, 38, 10).attr({
+                fill: "red"
+            });
+
+            //circle button
+            var circleButton = s2.circle(35, 110, 0).attr({
+                fill: "#009B77"
+            });
+
+            //square button
+            var rectButton = s2.rect(15, 160, 40, 0).attr({
+                fill: "#009B77"
+            });
+
+            //page load animations
+            circleButton.animate({r: 20}, 1500, mina.elastic);
+            rectButton.animate({height: 40}, 1500, mina.elastic );
+
+            //rotating rectangles to create an X
+            cButton.animate( { transform: "r" + 45 + ",30,20" }, 1600, mina.elastic);
+            cButton2.animate( { transform: "r" + -45 + ",50,40" }, 1600, mina.elastic);
+
+            //removal fade
+            function removeItems () {
+                var Csquares = s.selectAll("rect");
+                Csquares.animate({ transform: 't0,0 s0' }, 400, mina.backout);
+                setTimeout(function () {
+                    Csquares.remove();
+                }, 420);
+                var Ccircles = s.selectAll("circle");
+                Ccircles.animate({r: 0}, 400, mina.backout);
+                setTimeout(function () {
+                    Ccircles.remove();
+                }, 420);
+            }
+
+            cButton.mousedown(function(){
+                removeItems();
+            });
+
+            cButton2.mousedown(function(){
+                removeItems();
+            });
+
+            //click reaction animations
+            circleButton.mousedown(function(){
+                shape = "circle";
+                circleButton.animate({r: 25}, 100, mina.easeinout);
+                setTimeout(function () {
+                    circleButton.animate({r: 20}, 100, mina.easeinout);
+                }, 100);
+            });
+
+            rectButton.mousedown(function(){
+                shape = "square";
+                rectButton.animate({ transform: 't0,0 s1.2' }, 100, mina.backout);
+                setTimeout(function () {
+                    rectButton.animate({ transform: 't0,0 s1' }, 100, mina.backout);
+                }, 100);
+            });
+
+            //timer function with 2 times
+            function timer() {
+                time++;
+                time2++;
+                if (time2 > 100)
+                    time2 = 20;
+
+                if (time > 4000)
+                    time = 0;
+            }
+
+            //timer interval
+            var initiate = function() {
+                if (initiated == false) {
+                    var startTime = setInterval(function () {timer()}, 100);
+                    initiated = true;
+                };
+            };
+
+            //mouse tracking
+            function moveFunc(ev, x, y) {
+                mouseX = x;
+                mouseY = y;
+
+            };
+
+            //funky colour generation
+            var genColour = function(opt) {
+                if (opt == 0) {
+                    return time.toString(16);
+                }
+                else {
+                    console.log(mouseX*2);
+                    return time.toString(16)+(mouseX*2).toString(16);
+                }
+            }
+
+            //**not in use** stroke generation
+            var genStroke = function() {
+                return Math.floor(time2/100+100);
+            }
+
+            //main click function
+            s.mousedown(function(){
+
+                if (shape == "circle") {
+
+                    //keeping count up to date
+                    circles++;
+
+                    //generation for colours
+                    colour = genColour(1);
+                    stroke = genStroke();
+                    sColour = genColour(0);
+
+                    //storing in array and adding to page
+                    mouseCircles.push(s.circle(mouseX, mouseY, 0));
+
+                    //adding attributes
+                    mouseCircles[circles-1].attr({
+                        fill: "#"+colour,
+                        stroke: sColour,
+                        strokeWidth: stroke
+                    });
+
+                    //animating in
+                    mouseCircles[circles-1].animate({r: time2}, 700, mina.elastic);
+
+                    //adding class for targeting
+                    mouseCircles[circles-1].addClass("circle");
+                }
+
+                else {
+
+                    //keeping count up to date
+                    squares++;
+
+                    //generation for colours
+                    colour = genColour(1);
+                    stroke = genStroke();
+                    sColour = genColour(0);
+
+                    //storing in array and adding to page
+                    mouseSquares.push(s.rect(mouseX, mouseY, time2, 0));
+
+                    //adding attributes
+                    mouseSquares[squares-1].attr({
+                        fill: "#"+sColour,
+                        stroke: sColour,
+                        strokeWidth: stroke
+                    });
+
+                    //animating in
+                    mouseSquares[squares-1].animate({height: time2}, 700, mina.elastic);
+
+                    //adding class for targeting
+                    mouseSquares[squares-1].addClass("square");
+                }
+            });
+
+            //starting timer
+            initiate();
+
+            //update pointer location
+            s.mousemove(moveFunc);
+
+        }
+    </script>
+
+</head>
+
+<body>
+
+
+
+</body>
+
+</html>
